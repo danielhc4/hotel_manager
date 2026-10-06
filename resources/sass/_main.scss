@@ -1,0 +1,359 @@
+// Color Palette
+$ink: #1a1512;
+$ink-2: #251d18;
+$coral: #e35a2b;
+$coral-deep: #b8431f;
+$cream: #f7efe2;
+$cream-2: #fbf6ec;
+$oak: #5f6b4a;
+$oak-soft: #7c8863;
+$gold: #c9a15a;
+$text-dark: #2e2a28;
+$text-muted: #8a7d6f;
+$line: #e4d8c6;
+$white: #fff;
+$slate: #5c6b74;
+$plum: #8a5a63;
+$plate: #a99c8f;
+$error-deep: #b3392b;
+
+// Keyframes
+@keyframes cardIn {
+	from{
+		opacity:0;
+		transform:translateY(14px);
+	}
+	to{
+		opacity:1;
+		transform:translateY(0);
+	}
+}
+
+// Brand (Left Panel)
+.brand {
+	padding: clamp(2rem, 5vw, 5rem);
+	background:
+		radial-gradient(circle at 30% 20%, rgba(227,90,43,0.10), transparent 55%),
+		radial-gradient(circle at 80% 85%, rgba(95,107,74,0.14), transparent 50%),
+		linear-gradient(160deg, $ink 0%, $ink-2 100%);
+}
+.brand .brand-top .brand-eyebrow {
+	color: $gold;
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.28em;
+	text-transform: uppercase;
+}
+.brand .brand-center {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1.75rem;
+	margin-top: 2rem;
+	align-items:center;
+	margin-top: 1rem;
+}
+.brand .brand-center .brand-word {
+	font-family: 'Fraunces', serif;
+	font-weight: 500;
+	font-size: clamp(2.1rem, 3vw, 2.9rem);
+	color: $cream-2;
+	letter-spacing: 0.01em;
+	line-height: 1.05;
+}
+.brand .brand-center .brand-word .dot{
+	color: $coral;
+	margin: 0 0.35em;
+}
+.brand .brand-center .brand-sub {
+	font-size: 0.78rem;
+	letter-spacing: 0.32em;
+	text-transform: uppercase;
+	color: $oak-soft;
+	font-weight: 500;
+}
+.brand .brand-center .brand-tagline {
+	max-width: 30ch;
+	font-size: 0.98rem;
+	line-height: 1.6;
+	color: #c9bfb2;
+}
+.brand .brand-bottom {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	font-size: 0.78rem;
+	color: #8f8478;
+}
+.brand .brand-bottom .rule {
+	width: 32px;
+	height: 1px;
+	background: rgba(255,255,255,0.18);
+}
+
+
+// Login form
+.form-side {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2.2rem 1.4rem 3rem;
+	background: $cream;
+}
+.form-side .card {
+	width: 100%;
+	max-width: 400px;
+	animation: cardIn 0.7s ease both 0.15s;
+	background: transparent;
+	border: none;
+}
+.form-side .card .card-eyebrow {
+	font-size: 0.72rem;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: $oak;
+	font-weight: 600;
+	margin-bottom: 0.6rem;
+}
+.form-side .card h1 {
+	font-family: 'Fraunces', serif;
+	font-weight: 500;
+	font-size: 2.1rem;
+	color: $text-dark;
+	margin-bottom: 0.5rem;
+}
+.form-side .card p.lead {
+	color: $text-muted;
+	font-size: 0.94rem;
+	margin-bottom: 2.2rem;
+	line-height: 1.5;
+}
+.form-side .card .field {
+	margin-bottom: 1.3rem;
+	position: relative;
+}
+.form-side .card .field label {
+	display: block;
+	font-size: 0.78rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	color: $text-dark;
+	margin-bottom: 0.45rem;
+}
+.form-side .card .field .input-wrap {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+.form-side .card .field .input-wrap input{
+	width: 100%;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.95rem;
+	padding: 0.85rem 0.95rem;
+	border: 1.5px solid $line;
+	border-radius: 10px;
+	background: $cream-2;
+	color: $text-dark;
+	outline: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form-side .card .field .input-wrap input::placeholder {
+	color: #b3a795;
+}
+.form-side .card .field .input-wrap input:focus {
+	border-color: $coral;
+	box-shadow: 0 0 0 3px rgba(227,90,43,0.14);
+}
+.form-side .card .row-form {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 1.4rem 0 1.8rem;
+	font-size: 0.86rem;
+}
+.form-side .card .row-form .remember {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+	color: $text-muted;
+	cursor: pointer;
+	user-select: none;
+}
+.form-side .card .row-form .remember input {
+	appearance: none;
+	width: 17px;
+	height: 17px;
+	border: 1.6px solid $line;
+	border-radius: 5px;
+	background: $cream-2;
+	cursor: pointer;
+	position: relative;
+	flex: none;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+.form-side .card .row-form .remember input:checked {
+	background: $coral;
+	border-color: $coral;
+}
+.form-side .card .row-form .remember input:checked::after {
+	content: "";
+	position: absolute;
+	left: 5px;
+	top:1.5px;
+	width:4px; height:8px;
+	border: solid $white;
+	border-width: 0 2px 2px 0;
+	transform: rotate(40deg);
+}
+.form-side .card .row-form .forgot {
+	color: $coral-deep;
+	text-decoration: none;
+	font-weight: 500;
+}
+.form-side .card .row-form .forgot:hover {
+	text-decoration: underline;
+}
+.form-side .card .btn {
+	width: 100%;
+	padding: 0.95rem;
+	border: none;
+	border-radius: 10px;
+	background: linear-gradient(135deg, $coral, $coral-deep);
+	color: $white;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.98rem;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	cursor: pointer;
+	box-shadow: 0 12px 26px -12px rgba(184,67,31,0.55);
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+}
+.form-side .card .btn:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 16px 30px -12px rgba(184,67,31,0.6);
+}
+.form-side .card .btn:active {
+	transform: translateY(0px) scale(0.99);
+}
+
+// Topbar navbar
+.topbar {
+	display: flex;
+	align-items: center;
+	padding: 1.3rem clamp(1.2rem, 3vw, 2.4rem);
+	gap: 1.2rem;
+	border-bottom: 1px solid $line;
+	background: $cream-2;
+}
+.topbar .container-fluid .navbar-brand {
+	font-family: 'Fraunces', serif;
+	font-weight: 600;
+	font-size: 1.5rem;
+	color: $text-dark
+}
+.topbar .container-fluid .sub {
+	font-size: 0.82rem;
+	color: $text-muted;
+	margin-top: 0.15rem;
+}
+
+
+// Dashboard sidebar
+.sidebar {
+	background:linear-gradient(180deg, $ink 0%, $ink-2 100%);
+    color: $cream-2;
+}
+
+.sidebar .vertical-menu {
+	display: block;
+	align-items: center;
+	padding: 1.5rem;
+}
+
+.sidebar .vertical-menu ul {
+	padding: 0px;
+	list-style-type: none;
+}
+
+.sidebar .vertical-menu ul .menu-item {
+	margin-bottom: 1rem;
+}
+.sidebar .vertical-menu ul .menu-item a {
+	display: block;
+	
+	color: inherit;
+	text-decoration: none;
+}
+.sidebar .vertical-menu ul .menu-item form {
+	display: block;
+}
+.sidebar .vertical-menu ul .menu-item form button {
+	display: block;
+	width: 100%;
+	text-decoration: none;
+	text-align: left;
+	padding:0.68rem 0.8rem;
+    border-radius:9px;
+    font-size:0.89rem;
+    font-weight:500;
+    color:#cfc4b6;
+	background: none;
+	border: none;
+}
+.sidebar .vertical-menu ul .menu-item > a {
+	padding:0.68rem 0.8rem;
+    border-radius:9px;
+    font-size:0.89rem;
+    font-weight:500;
+    color:#cfc4b6;
+	transition:background 0.15s ease, color 0.15s ease;
+	padding: 0.5rem;
+}
+.sidebar .vertical-menu ul .menu-item > a svg, 
+.sidebar .vertical-menu ul .menu-item > form button svg {
+	width: 18px;
+	height: 18px;
+	flex: none;
+	stroke: currentColor;
+	fill: none;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.sidebar .vertical-menu ul .menu-item > a:hover,
+.sidebar .vertical-menu ul .menu-item > form button:hover {
+	background: rgba(255,255,255,0.05);
+	color: $white;
+}
+.sidebar .vertical-menu ul .menu-item .submenu {
+	display: none;
+	padding-left: 1rem;
+}
+.sidebar .vertical-menu ul .menu-item.active > a {
+	background: linear-gradient(135deg, $coral, $coral-deep);
+    color: #fff;
+    box-shadow:0 8px 20px -8px rgba(227,90,43,0.6);
+}
+.sidebar .vertical-menu ul .menu-item.active .submenu {
+	display: block;
+	margin-top:  1rem;
+}
+.sidebar .vertical-menu ul .menu-item.active .submenu .submenu-item a {
+	border-radius:9px;
+	padding: 0.3rem;
+	margin-bottom: 0.5rem;
+	padding-left: 1rem;
+}
+.sidebar .vertical-menu ul .menu-item.active .submenu .submenu-item a:hover {
+	background: rgba(255,255,255,0.05);
+}
+
+div.main {
+	background-color: $cream;
+}

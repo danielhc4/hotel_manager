@@ -42,6 +42,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'token', // ← esto es lo que usa auth:api
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*

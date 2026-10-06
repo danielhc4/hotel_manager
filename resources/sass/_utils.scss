@@ -1,0 +1,474 @@
+/* ==========================================================================
+   Component / Table Hotel Manager
+
+	Tabla estilizada con los colores corporativos.
+   ========================================================================== */
+
+table.hm-table {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.80rem;
+}
+table.hm-table * th {
+	color: $text-muted;
+}
+table.hm-table * td {
+	color: $text-dark;
+}
+
+// Component / Table cell
+//
+// El componente table cell es un wrapper para contener un avatar.
+table.hm-table tbody tr td div.hm-table-cell {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+}
+table.hm-table tbody tr td div.hm-table-cell div.hm-avatar {
+	position: relative;
+	display: flex;
+	flex: none;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	align-items: center;
+	justify-content: center;
+	font-weight: 600;
+	color: $white;
+}
+table.hm-table tbody tr:nth-child(6n+1) td div.hm-table-cell div.hm-avatar {
+	background-color: $coral;
+}
+table.hm-table tbody tr:nth-child(6n+2) td div.hm-table-cell div.hm-avatar {
+	background-color: $oak;
+}
+table.hm-table tbody tr:nth-child(6n+3) td div.hm-table-cell div.hm-avatar {
+	background-color: $gold;
+}
+table.hm-table tbody tr:nth-child(6n+4) td div.hm-table-cell div.hm-avatar {
+	background-color: $slate;
+}
+table.hm-table tbody tr:nth-child(6n+5) td div.hm-table-cell div.hm-avatar {
+	background-color: $plum;
+}
+table.hm-table tbody tr:nth-child(6n+6) td div.hm-table-cell div.hm-avatar {
+	background-color: $plate;
+}
+table.hm-table tbody tr td div.hm-table-cell div.hm-info {
+	display: block;
+	font-weight: 600;
+	color: $text-dark;
+	box-sizing: border-box;
+	unicode-bidi: isolate;
+}
+
+// Component / Table text color
+//
+// El componente es un span que permite cambiar el color del texto dentro de la tabla, usando colores corporativos.
+table.hm-table tbody tr td span[class^="hm-table-text"] {
+	font-size: 0.82rem;
+}
+table.hm-table tbody tr td span.hm-table-text-mutted {
+	color: $text-muted;
+}
+table.hm-table tbody tr td span.hm-table-text-mutted-bold {
+	color: $text-muted;
+	font-weight: 600;
+}
+table.hm-table tbody tr td span.hm-table-text-dark {
+	color: $text-dark;
+}
+table.hm-table tbody tr td span.hm-table-text-dark-bold {
+	color: $text-dark;
+	font-weight: 600;
+}
+
+// Component / Table badge
+//
+// El componente es un badge para la tabla con los colores corporativos.
+table.hm-table tbody tr td span.hm-table-badge {
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+table.hm-table tbody tr td span.hm-table-badge.hm-table-badge-color-coral {
+	background-color: $coral;
+}
+table.hm-table tbody tr td span.hm-table-badge.hm-table-badge-color-oak {
+	background-color: $oak;
+}
+table.hm-table tbody tr td span.hm-table-badge.hm-table-badge-color-oak-soft {
+	background-color: $oak-soft;
+}
+table.hm-table tbody tr td span.hm-table-badge.hm-table-badge-color-gold {
+	background-color: $gold;
+}
+table.hm-table tbody tr td span.hm-table-badge.hm-table-badge-color-slate {
+	background-color: $slate;
+}
+table.hm-table tbody tr td span.hm-table-badge.hm-table-badge-color-plum {
+	background-color: $plum;
+}
+table.hm-table tbody tr td span.hm-table-badge.hm-table-badge-color-plate {
+	background-color: $plate;
+}
+table.hm-table tbody tr:nth-child(6n+1) td span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $coral;
+}
+table.hm-table tbody tr:nth-child(6n+2) td span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $oak;
+}
+table.hm-table tbody tr:nth-child(6n+3) td span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $gold;
+}
+table.hm-table tbody tr:nth-child(6n+4) td span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $slate;
+}
+table.hm-table tbody tr:nth-child(6n+5) td span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $plum;
+}
+table.hm-table tbody tr:nth-child(6n+6) td span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $plate;
+}
+
+/* ==========================================================================
+   Component / Badge dot
+
+	Punto estilizado para badge
+   ========================================================================== */
+span.badge span.hm-dot-badge {
+	display: inline-flex;
+	width: 10px;
+	height: 10px;
+	margin-right: 5px;
+	border-radius: 50%;
+}
+span.badge span.hm-dot-badge.active {
+	color: $oak-soft;
+	background: $oak-soft;
+}
+span.badge span.hm-dot-badge.on-vacations {
+	color: $oak-soft;
+	background: $gold;
+}
+span.badge span.hm-dot-badge.absent {
+	color: $oak-soft;
+	background: $coral;
+}
+
+/* ==========================================================================
+   Component / Text dot
+
+	Punto estilizado para texto
+   ========================================================================== */
+span.hm-text-dot-coral {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: $coral;
+	flex: none;
+}
+span.hm-text-dot-oak {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: $oak;
+	flex: none;
+}
+span.hm-text-dot-oak-soft {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: $oak-soft;
+	flex: none;
+}
+span.hm-text-dot-oak-gold {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: $gold;
+	flex: none;
+}
+span.hm-text-dot-oak-slate {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: $slate;
+	flex: none;
+}
+span.hm-text-dot-oak-plum {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: $plum;
+	flex: none;
+}
+span.hm-text-dot-oak-plate {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: $plate;
+	flex: none;
+}
+
+/* ==========================================================================
+   Component / Icon button
+
+	Botón de icono SVG
+   ========================================================================== */
+
+button.hm-icon-btn {
+    width:30px;
+	height:30px;
+	border-radius:7px;
+	border:1px solid transparent;
+    background:none;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	color: $text-muted;
+}
+button.hm-icon-btn svg {
+	width:15px;
+	height:15px;
+	stroke:currentColor;
+	fill:none;
+	stroke-width:1.8;
+}
+button.hm-icon-btn:hover{
+	background: $cream;
+	border-color: $line;
+	color: $coral-deep;
+}
+
+/* ==========================================================================
+   Component / Corporative color buttons
+
+	Botones con colores corporativos
+   ========================================================================== */
+
+button.hm-button-oak {
+	background-color: $oak;
+	color: $white;
+}
+button.hm-button-oak:hover {
+	background-color: $oak-soft;
+	color: $white;
+}
+
+button.hm-button-coral {
+	background-color: $coral-deep;
+	color: $white;
+}
+button.hm-button-coral:hover {
+	background-color: $coral;
+	color: $white;
+}
+
+button.hm-button-cream {
+	background-color: $cream;
+	color: $text-dark;
+}
+button.hm-button-cream:hover {
+	background-color: $cream-2;
+	color: $text-dark;
+}
+
+button.hm-button-error-deep {
+	background-color: $error-deep;
+	color: $white;
+}
+button.hm-button-error-deep:hover {
+	background-color: $error-deep;
+	color: $white;
+}
+
+/* ==========================================================================
+   Component / Select Wrap
+
+	Wrapper para Select estilizado
+   ========================================================================== */
+
+div.hm-select-wrap {
+	position: relative;
+}
+div.hm-select-wrap svg {
+	position: absolute;
+	right: 0.85rem;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 14px;
+	height: 14px;
+	stroke: $text-muted;
+	fill: none;
+	stroke-width: 2.2;
+	pointer-events: none;
+}
+div.hm-select-wrap select {
+	width: 100%;
+	appearance: none;
+	-webkit-appearance: none;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.9rem;
+	font-weight: 500;
+	padding: 0.62rem 2.2rem 0.62rem 0.85rem;
+	border: 1.5px solid $line;
+	border-radius: 9px;
+	background: $cream-2;
+	color: $text-dark;
+	outline: none;
+	cursor: pointer;
+}
+
+/* ==========================================================================
+   Component / Input
+
+	Input estilizado
+   ========================================================================== */
+
+input.hm-input {
+	width: 100%;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.9rem;
+	padding: 0.72rem 0.9rem;
+	border: 1.5px solid $line;
+	border-radius: 10px;
+	background: $cream-2;
+	color: $text-dark;
+	outline: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ==========================================================================
+   Component / Textarea
+
+	Textarea estilizado
+   ========================================================================== */
+
+div.hm-textarea-wrap {
+	position: relative;
+	border: 1.5px solid $line;
+	border-radius: 12px;
+	background: $cream-2;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+div.hm-textarea-wrap textarea.hm-textarea {
+	width: 100%;
+	min-height: 140px;
+	max-height: 360px;
+	resize: none;
+	overflow-y: none;
+	border: none;
+	outline: none;
+	background: none;
+	padding: 0.85rem 0.95rem 1.8rem;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.9rem;
+	line-height: 1.6;
+	color: $text-dark;
+}
+
+/* ==========================================================================
+   Component / Grid Form
+
+	Formulario en forma de reja
+   ========================================================================== */
+
+form.hm-grid-form div.hm-grid-form-table div.row {
+	border-bottom: solid 1px $line;
+}
+form.hm-grid-form div.hm-grid-form-table div.row {
+	padding: 1rem 0.75rem;
+}
+form.hm-grid-form div.hm-grid-form-table div.row > div > span {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: $text-muted;
+}
+form.hm-grid-form div.hm-grid-form-table div.row div.hm-grid-form-vhead {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	font-family: 'Fraunces', serif;
+	font-weight: 600;
+	font-size: 1rem;
+	color: $text-dark;
+}
+form.hm-grid-form div.hm-grid-form-table div.row select {
+	width: 100%;
+	appearance: none;
+	-webkit-appearance: none;
+	font-family: 'Inter', sans-serif;
+	font-size: 0.9rem;
+	font-weight: 500;
+	padding: 0.62rem 2.2rem 0.62rem 0.85rem;
+	border: 1.5px solid $line;
+	border-radius: 9px;
+	background: $cream-2;
+	color: $text-dark;
+	outline: none;
+	cursor: pointer;
+}
+form.hm-grid-form div.hm-grid-form-table div.row select.hm-grid-form-select-error {
+	background: $gold;
+	color: $white;
+
+}
+
+/* ==========================================================================
+   Component / Modal de error
+
+	Realzador de texto
+   ========================================================================== */
+
+#modal-error-title {
+	font-family: 'Fraunces', serif;
+	font-weight: 600;
+	font-size: 1.32rem;
+	color: $text-dark;
+}
+
+#modal-error-description {
+	color: $text-muted;
+}
+
+#modal-error-code {
+	margin-top: 0.7rem;
+	background-color: $cream-2;
+	border: 1px solid $line;
+	border-radius: 10px;
+	padding: 0.75rem 0.9rem;
+	font-family: 'SFMono-Regular', Consolas, monospace;
+	font-size: 0.76rem;
+	line-height: 1.6;
+	color: $text-muted;
+	text-align: left;
+}
+
+#modal-error-code b {
+	font-size: 0.76rem;
+	line-height: 1.6;
+}
+
+/* ==========================================================================
+   Styles / Text dark
+
+	Realzador de texto
+   ========================================================================== */
+
+.hm-text-dark {
+	font-family: 'Inter', sans-serif;
+	font-size: 0.9rem;
+	color: $text-dark
+}
+
+
+
+
+
+
+
+
+
+
