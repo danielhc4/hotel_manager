@@ -20,7 +20,8 @@ class Activity extends Model
 		'shifts_id',
 		'activity_type',
 		'description',
-		'employees_id'
+		'employees_id',
+        'departments_id'
     ];
 
     public function shift() {
@@ -29,5 +30,9 @@ class Activity extends Model
 
     public function employee() {
         return $this->belongsTo(Employee::class, 'employees_id', 'id');
+    }
+
+    public function department() {
+        return $this->belongsTo(Department::class, 'departments_id', 'id');
     }
 }

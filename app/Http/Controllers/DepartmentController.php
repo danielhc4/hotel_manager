@@ -31,9 +31,9 @@ class DepartmentController extends Controller
 
 	public function update(Request $request) {
 		$validated = $request->validate([
-			'id' => 'required|int',
-			'name' => 'required|string|min:3|max:100',
-			'description' => 'required|string|min:3',
+			'id' 			=> ['required', 'int'],
+			'name' 			=> ['required', 'string', 'min:3', 'max:100'],
+			'description' 	=> ['required', 'string', 'min:3'],
 		]);
 		$department = Department::find($validated['id']);
 		$department->update($validated);

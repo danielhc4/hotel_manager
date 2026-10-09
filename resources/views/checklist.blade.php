@@ -17,8 +17,7 @@
 		@include('navigation.sidebar')
 
 		<div class="col-10 h-100 p-5 main" id="app">
-			{{$extra_activities}}
-			<checklist-component></checklist-component>
+			<checklist-component asset-url="{{ asset('images') }}"></checklist-component>
 		</div>
 
 	</div>

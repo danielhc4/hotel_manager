@@ -21,6 +21,7 @@
 								<th scope="col" class="text-left">Actividad</th>
 								<th scope="col" class="text-left">Tipo</th>
 								<th scope="col" class="text-left">Descripción</th>
+								<th scope="col" class="text-left">Departamento</th>
 								<th scope="col" class="text-left">Turno</th>
 								<th scope="col" class="text-left">Confianza</th>
 								<th scope="col" class="text-left">Acciones</th>
@@ -34,6 +35,14 @@
 									<img v-else :src="`${ assetUrl }/sporadic_activity_icon.svg`" title="Extra" style="width: 25px;">
 								</td>
 								<td>{{ registro.description }}</td>
+								<td>
+									<span v-if="registro.departments_id !== null" class="badge hm-table-badge hm-table-badge-color-oak">
+										{{ registro.department.name }}
+									</span>
+									<span v-else class="badge hm-table-badge hm-table-badge-color-gold">
+										General
+									</span>
+								</td>
 								<td>{{ registro.shift.name }}</td>
 								<td v-if="registro.employee">
 									Confianza
@@ -70,87 +79,99 @@
 
 	<!-- Modal Add -->
 	<div class="modal " id="add-modal" tabindex="-1">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<form @submit.prevent="save_add">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5">Editar actividad</h1>
+						<h1 class="modal-title fs-5">Agregar actividad</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear_form()"></button>
 					</div>
 					<div class="modal-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="add_activity_name" class="form-label">Nombre de actividad</label>
-                                    <input type="text" id="add_activity_name" class="form-control hm-input" placeholder="Ej. Limpiar baños" v-model="form_add.name">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="add_activity_shift" class="form-label">Turno</label>
-                                    <div class="hm-select-wrap">
-                                        <select id="add_activity_shift" class="form-select" v-model="form_add.shifts_id">
+						<div class="row">
+							<div class="col-6">
+								<div class="mb-3">
+									<label for="add_activity_name" class="form-label">Nombre de actividad</label>
+									<input type="text" id="add_activity_name" class="form-control hm-input" placeholder="Ej. Limpiar baños" v-model="form_add.name">
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="mb-3">
+									<label for="add_activity_shift" class="form-label">Turno</label>
+									<div class="hm-select-wrap">
+										<select class="form-select" id="add_activity_shift" @change="get_employees(form_add.departments_id)" v-model="form_add.shifts_id">
 											<option selected :value="null">Selecciona turno</option>
-                                            <option v-for="shift in shifts" :value="shift.id">{{ shift.name }}</option>
-                                        </select>
-                                        <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="add_activity_type" class="form-label">Tipo de actividad</label>
-                                    <div id="add_activity_type" class="hm-select-wrap">
-                                        <select class="form-select" v-model="form_add.activity_type">
+											<option v-for="shift in shifts" :value="shift.id">{{ shift.name }}</option>
+										</select>
+										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<div class="mb-3">
+									<label for="add_activity_type" class="form-label">Tipo de actividad</label>
+									<div class="hm-select-wrap">
+										<select class="form-select" id="add_activity_type" v-model="form_add.activity_type">
 											<option selected :value="null">Selecciona tipo de actividad</option>
-                                            <option value="DAILY">Diaria</option>
-                                            <option value="EXTRA">Extra</option>
-                                        </select>
-                                        <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="add_shift_description" class="form-label">Descripción</label>
+											<option value="DAILY">Diaria</option>
+											<option value="EXTRA">Extra</option>
+										</select>
+										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+									</div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="mb-3">
+									<label for="add_activity_department" class="form-label">Departamento</label>
+									<div class="hm-select-wrap">
+										<select class="form-select" id="add_activity_department" @change="get_employees(form_add.departments_id)" v-model="form_add.departments_id">
+											<option selected :value="null">Actividad general</option>
+											<option v-for="department in departments" :value="department.id">{{ department.name }}</option>
+										</select>
+										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								<div class="mb-3">
+									<label for="add_shift_description" class="form-label">Descripción</label>
 									<div class="hm-textarea-wrap">
 										<textarea id="add_shift_description" class="form-control hm-textarea" placeholder="Ej. Hacer la limpieza completa de baños"  v-model="form_add.description" rows="3"></textarea>
 									</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="add_activity_trust" class="form-label">Actividad de confianza</label>
-                                    <div class="hm-select-wrap">
-                                        <select id="add_activity_trust" class="form-select" v-model="form_add.trusted">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<div class="mb-3">
+									<label for="add_activity_trust" class="form-label">Actividad de confianza</label>
+									<div class="hm-select-wrap">
+										<select id="add_activity_trust" class="form-select" v-model="form_add.trusted">
 											<option selected :value="null">Actividad de confianza</option>
-                                            <option value="TRUSTED">Sí</option>
-                                            <option value="NO_TRUSTED">No</option>
-                                        </select>
-                                        <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6" v-if="form_add.trusted === 'TRUSTED'">
-                                <div class="mb-3">
-                                    <label for="add_activity_trusted_employee" class="form-label">Empleado de confianza</label>
-                                    <div id="add_activity_trusted_employee" class="hm-select-wrap">
-                                        <select class="form-select" id="trusted_employee" v-model="form_add.employees_id">
+											<option value="TRUSTED">Sí</option>
+											<option value="NO_TRUSTED">No</option>
+										</select>
+										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+									</div>
+								</div>
+							</div>
+							<div class="col-6" v-if="form_add.trusted === 'TRUSTED'">
+								<div class="mb-3">
+									<label for="add_activity_trusted_employee" class="form-label">Empleado de confianza</label>
+									<div id="add_activity_trusted_employee" class="hm-select-wrap">
+										<select class="form-select" id="trusted_employee" v-model="form_add.employees_id">
 											<option selected :value="null">Empleado de confianza</option>
-                                            <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.middle_name }} {{ employee.paternal_surename }} {{ employee.maternal_surename }}</option>
-                                        </select>
-                                        <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
-                                    </div>
-                                    <div id="trusted_employee_message_error" class="form-text d-none">Si la actividad es de confianza se tiene que elegir un empleado.</div>
-                                </div>
-                            </div>
-                        </div>
+											<option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.middle_name }} {{ employee.paternal_surename }} {{ employee.maternal_surename }} ({{ employee.shift.name }}) </option>
+										</select>
+										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+									</div>
+									<div id="trusted_employee_message_error" class="form-text d-none">Si la actividad es de confianza se tiene que elegir un empleado.</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn hm-button-coral" data-bs-dismiss="modal" @click="clear_form()">Cerrar</button>
@@ -163,7 +184,7 @@
 
 	<!-- Modal Edit -->
 	<div class="modal " id="edit-modal" tabindex="-1">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<form @submit.prevent="save_edit">
 					<div class="modal-header">
@@ -180,9 +201,9 @@
 							</div>
 							<div class="col-6">
 								<div class="mb-3">
-									<label  class="form-label">Turno</label>
+									<label class="form-label">Turno</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" v-model="form_edit.shifts_id">
+										<select class="form-select" @change="get_employees(form_edit.departments_id)" v-model="form_edit.shifts_id">
 											<option selected :value="null">Selecciona turno</option>
 											<option v-for="shift in shifts" :value="shift.id">{{ shift.name }}</option>
 										</select>
@@ -200,6 +221,18 @@
 											<option selected :value="null">Selecciona tipo de actividad</option>
 											<option value="DAILY">Diaria</option>
 											<option value="EXTRA">Extra</option>
+										</select>
+										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+									</div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="mb-3">
+									<label for="edit_activity_department" class="form-label">Departamento</label>
+									<div class="hm-select-wrap">
+										<select class="form-select" id="edit_activity_department" @change="get_employees(form_edit.departments_id)" v-model="form_edit.departments_id">
+											<option selected :value="null">Actividad general</option>
+											<option v-for="department in departments" :value="department.id">{{ department.name }}</option>
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
@@ -254,7 +287,7 @@
 		</div>
 	</div>
 
-    <!-- Modal Delete -->
+	<!-- Modal Delete -->
 	<div class="modal " id="delete-modal" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -292,6 +325,7 @@ const registros = ref([]);
 const form_delete = ref({});
 const shifts = ref([]);
 const employees = ref([]);
+const departments = ref([]);
 const erroresValidacion = ref({});
 
 const getInitialForm = () => ({
@@ -300,6 +334,7 @@ const getInitialForm = () => ({
 	activity_type: null,
 	description: null,
 	employees_id: null,
+	departments_id: null,
 	created_at: null,
 	updated_at: null,
 	trusted: null
@@ -315,11 +350,11 @@ const headers = {
 onMounted(async () => {
 	load_records();
 	get_shifts();
-	get_employees();
+	get_departments();
 });
 
 async function load_records () {
-    const { data } = await axios.get('/api/activities', headers);
+	const { data } = await axios.get('/api/activities', headers);
 	registros.value = data;
 };
 
@@ -334,10 +369,35 @@ const get_shifts = async () => {
 	shifts.value = response.data;
 };
 
-const get_employees = async () => {
-	const response = await axios.get('/api/employees', headers);
-	employees.value = response.data;
-}
+const get_employees = async (departament_id) => {
+	if(departament_id !== null || departament_id !== undefined) {
+		const response = await axios.get(`/api/employees?campo=departments_id&q=${departament_id}`, headers);
+		var employee_filtered = [];
+		if(form_add.shifts_id == null && form_edit.shifts_id == null) {
+			employees.value = response.data;
+		}
+		else {
+			for(var i = 0; i < response.data.length; i++) {
+				if(form_add.shifts_id !== null) {
+					if(response.data[i].shifts_id == form_add.shifts_id) {
+						employee_filtered.push(response.data[i]);
+					}
+				}
+				if(form_edit.shifts_id !== null) {
+					if(response.data[i].shifts_id == form_edit.shifts_id) {
+						employee_filtered.push(response.data[i]);
+					}
+				}
+			}
+			employees.value = employee_filtered;
+		}
+	}
+};
+
+const get_departments = async () => {
+	const response = await axios.get('/api/departments', headers);
+	departments.value = response.data;
+};
 
 function editar(registro) {
 	Object.assign(form_edit, registro);
@@ -349,13 +409,13 @@ function eliminar(registro) {
 };
 
 const save_add = async () => {
-    try {
+	try {
 		await axios.post(`/api/activities`, form_add, headers);
 		load_records();
 	}
 	catch(error) {
 		if (error.response) {
-      		const status = error.response.status
+	  		const status = error.response.status
 			if (status === 422) {
 				erroresValidacion.value = error.response.data.errors;
 				// console.log(error.response.data);
@@ -389,7 +449,7 @@ const save_add = async () => {
 			else if (status === 500) {
 				console.error('Error interno del servidor')
 			}
-    	}
+		}
 		else if (error.request) {
 			console.error('No hubo respuesta del servidor')
 		}
@@ -474,7 +534,7 @@ const save_delete = async () => {
 	}
 	catch(error) {
 		if (error.response) {
-      		const status = error.response.status
+	  		const status = error.response.status
 			if (status === 422) {
 				erroresValidacion.value = error.response.data.errors;
 				// console.log(error.response.data);
@@ -508,7 +568,7 @@ const save_delete = async () => {
 			else if (status === 500) {
 				console.error('Error interno del servidor')
 			}
-    	}
+		}
 		else if (error.request) {
 			console.error('No hubo respuesta del servidor')
 		}

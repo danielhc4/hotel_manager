@@ -16,20 +16,8 @@
 		<!-- Menú de navegación -->
 		@include('navigation.sidebar')
 
-		<div class="col-10 h-100 p-5 main">
-			<div class="row h-100">
-				<div class="col-12">
-
-					<div class="card rounded-4 h-100">
-						<div class="card-body">
-							<h5 class="card-title">Asistencia</h5>
-							<p class="card-text">Asistencia de empleados</p>
-							<div id="calendar"></div>
-						</div>
-					</div>
-
-				</div>
-			</div>
+		<div class="col-10 h-100 p-5 main" id="app">
+			<attendance-component></attendance-component>
 		</div>
 
 	</div>

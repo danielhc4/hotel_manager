@@ -9,11 +9,11 @@
 		<!-- Vite Directive -->
 		@vite([
 			'resources/sass/app.scss',
-			'resources/js/app.js',
 			'resources/js/calendar.js',
 			'resources/js/bootstrap.js',
 			'resources/js/vue.js',
 			'resources/js/jquery.js',
+			'resources/js/app.js',
 		])
 	</head>
 	<body class="w-100 h-100 p-0 m-0">

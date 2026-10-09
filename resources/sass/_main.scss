@@ -17,6 +17,10 @@ $plum: #8a5a63;
 $plate: #a99c8f;
 $error-deep: #b3392b;
 
+$disable-bg: #f1ebe0;
+$disable-border: #e3d7c2;
+$text-disabled: #b3a795;
+
 // Keyframes
 @keyframes cardIn {
 	from{
@@ -356,4 +360,5 @@ $error-deep: #b3392b;
 
 div.main {
 	background-color: $cream;
+	overflow-y: scroll;
 }

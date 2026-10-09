@@ -18,10 +18,12 @@ return new class extends Migration
             $table->enum('activity_type', ['DAILY', 'EXTRA']);
             $table->text('description');
             $table->unsignedBigInteger('employees_id')->nullable();
+            $table->unsignedBigInteger('departments_id')->nullable();
             $table->timestamps();
 
             $table->foreign('shifts_id')->references('id')->on('shifts')->onDelete('restrict');
             $table->foreign('employees_id')->references('id')->on('employees')->onDelete('restrict');
+            $table->foreign('departments_id')->references('id')->on('departments')->onDelete('restrict');
         });
     }
 

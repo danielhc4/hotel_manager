@@ -15,6 +15,11 @@ table.hm-table * td {
 	color: $text-dark;
 }
 
+// Colors
+table.hm-table * td.hm-table-td-disable {
+	background-color: $disable-bg;
+}
+
 // Component / Table cell
 //
 // El componente table cell es un wrapper para contener un avatar.
@@ -61,6 +66,51 @@ table.hm-table tbody tr td div.hm-table-cell div.hm-info {
 	unicode-bidi: isolate;
 }
 
+// Component / Table Data (td) color
+//
+// El componente permite meditante la edición del Table Row (tr) colorear todos los td
+
+table.hm-table tbody tr.hm-table-row-coral td {
+	background-color: $coral;
+	color: $white;
+}
+table.hm-table tbody tr.hm-table-row-coral-deep td {
+	background-color: $coral-deep;
+	color: $white;
+}
+table.hm-table tbody tr.hm-table-row-cream td {
+	background-color: $cream;
+	color: $text-dark;
+}
+table.hm-table tbody tr.hm-table-row-cream-2 td {
+	background-color: $cream-2;
+	color: $text-dark;
+}
+table.hm-table tbody tr.hm-table-row-oak-soft td {
+	background-color: $oak-soft;
+	color: $white;
+}
+table.hm-table tbody tr.hm-table-row-gold td {
+	background-color: $gold;
+	color: $white;
+}
+table.hm-table tbody tr.hm-table-row-slate td {
+	background-color: $slate;
+	color: $white;
+}
+table.hm-table tbody tr.hm-table-row-plum td {
+	background-color: $plum;
+	color: $white;
+}
+table.hm-table tbody tr.hm-table-row-plate td {
+	background-color: $plate;
+	color: $white;
+}
+table.hm-table tbody tr.hm-table-row-disable-bg td {
+	background-color: $disable-bg;
+	color: $text-disabled;
+}
+
 // Component / Table text color
 //
 // El componente es un span que permite cambiar el color del texto dentro de la tabla, usando colores corporativos.
@@ -85,6 +135,49 @@ table.hm-table tbody tr td span.hm-table-text-dark-bold {
 // Component / Table badge
 //
 // El componente es un badge para la tabla con los colores corporativos.
+table.hm-table thead tr th span.hm-table-badge {
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+table.hm-table thead tr th span.hm-table-badge.hm-table-badge-color-coral {
+	background-color: $coral;
+}
+table.hm-table thead tr th span.hm-table-badge.hm-table-badge-color-oak {
+	background-color: $oak;
+}
+table.hm-table thead tr th span.hm-table-badge.hm-table-badge-color-oak-soft {
+	background-color: $oak-soft;
+}
+table.hm-table thead tr th span.hm-table-badge.hm-table-badge-color-gold {
+	background-color: $gold;
+}
+table.hm-table thead tr th span.hm-table-badge.hm-table-badge-color-slate {
+	background-color: $slate;
+}
+table.hm-table thead tr th span.hm-table-badge.hm-table-badge-color-plum {
+	background-color: $plum;
+}
+table.hm-table thead tr th span.hm-table-badge.hm-table-badge-color-plate {
+	background-color: $plate;
+}
+table.hm-table thead tr:nth-child(6n+1) th span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $coral;
+}
+table.hm-table thead tr:nth-child(6n+2) th span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $oak;
+}
+table.hm-table thead tr:nth-child(6n+3) th span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $gold;
+}
+table.hm-table thead tr:nth-child(6n+4) th span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $slate;
+}
+table.hm-table thead tr:nth-child(6n+5) th span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $plum;
+}
+table.hm-table thead tr:nth-child(6n+6) th span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $plate;
+}
 table.hm-table tbody tr td span.hm-table-badge {
 	font-size: 0.75rem;
 	font-weight: 500;
@@ -126,6 +219,34 @@ table.hm-table tbody tr:nth-child(6n+5) td span.hm-table-badge.hm-table-badge-co
 	background-color: $plum;
 }
 table.hm-table tbody tr:nth-child(6n+6) td span.hm-table-badge.hm-table-badge-color-sort {
+	background-color: $plate;
+}
+
+/* ==========================================================================
+   Component / Badge
+
+	Badge estilizado
+   ========================================================================== */
+
+span.badge.hm-badge-color-coral {
+	background-color: $coral;
+}
+span.badge.hm-badge-color-oak {
+	background-color: $oak;
+}
+span.badge.hm-badge-color-oak-soft {
+	background-color: $oak-soft;
+}
+span.badge.hm-badge-color-gold {
+	background-color: $gold;
+}
+span.badge.hm-badge-color-slate {
+	background-color: $slate;
+}
+span.badge.hm-badge-color-plum {
+	background-color: $plum;
+}
+span.badge.hm-badge-color-plate {
 	background-color: $plate;
 }
 
@@ -180,28 +301,28 @@ span.hm-text-dot-oak-soft {
 	background-color: $oak-soft;
 	flex: none;
 }
-span.hm-text-dot-oak-gold {
+span.hm-text-dot-gold {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
 	background-color: $gold;
 	flex: none;
 }
-span.hm-text-dot-oak-slate {
+span.hm-text-dot-slate {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
 	background-color: $slate;
 	flex: none;
 }
-span.hm-text-dot-oak-plum {
+span.hm-text-dot-plum {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
 	background-color: $plum;
 	flex: none;
 }
-span.hm-text-dot-oak-plate {
+span.hm-text-dot-plate {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
@@ -238,9 +359,11 @@ button.hm-icon-btn:hover{
 	border-color: $line;
 	color: $coral-deep;
 }
-
+button.hm-icon-btn:disabled {
+	color: grey;
+}
 /* ==========================================================================
-   Component / Corporative color buttons
+   Component / Button
 
 	Botones con colores corporativos
    ========================================================================== */
@@ -337,6 +460,14 @@ input.hm-input {
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+input.hm-input:disabled {
+	background-color: $disable-bg;
+	border-color: $disable-border;
+	color: $text-disabled;
+	-webkit-text-fill-color: $text-disabled;
+	opacity: 1;
+}
+
 /* ==========================================================================
    Component / Textarea
 
@@ -364,6 +495,13 @@ div.hm-textarea-wrap textarea.hm-textarea {
 	font-size: 0.9rem;
 	line-height: 1.6;
 	color: $text-dark;
+}
+div.hm-textarea-wrap textarea.hm-textarea:disabled {
+	background-color: $disable-bg;
+	border-color: $disable-border;
+	color: $text-disabled;
+	-webkit-text-fill-color: $text-disabled;
+	opacity: 1;
 }
 
 /* ==========================================================================
@@ -462,13 +600,5 @@ form.hm-grid-form div.hm-grid-form-table div.row select.hm-grid-form-select-erro
 	font-size: 0.9rem;
 	color: $text-dark
 }
-
-
-
-
-
-
-
-
 
 
