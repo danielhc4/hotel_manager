@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/js/calendar.js',
                 'resources/js/bootstrap.js',
                 'resources/js/vue.js',
+                'resources/js/jquery.js',
             ],
             refresh: true,
         }),
