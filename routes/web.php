@@ -35,6 +35,6 @@ Route::post('/login', Login::class)
     ->middleware('guest');
 
 // Logout route
-Route::post('/logout', Logout::class)
+Route::match(['POST', 'GET'], '/logout', Logout::class)
     ->middleware('auth')
     ->name('logout');
