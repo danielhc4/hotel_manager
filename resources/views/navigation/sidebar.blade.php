@@ -46,16 +46,14 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <form method="POST" action="/logout">
-                        <button type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <a href="/logout">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M9 3H5.5A1.5 1.5 0 0 0 4 4.5v15A1.5 1.5 0 0 0 5.5 21H9"/>
                                 <line x1="21" y1="12" x2="10.5" y2="12"/>
                                 <path d="M17 8l4 4-4 4"/>
                             </svg>
-                            Logout
-                        </button>
-                    </form>
+                        Logout
+                    </a>
                 </li>
             </ul>
         </nav>

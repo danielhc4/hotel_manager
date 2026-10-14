@@ -27,14 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Login routes
-Route::view('/login', 'auth.login')
-    ->middleware('guest')
-    ->name('login');
-
-Route::post('/login', Login::class)
-    ->middleware('guest');
+Route::view('/login', 'auth.login')->middleware('guest')->name('login');
+Route::post('/login', Login::class)->middleware('guest');
 
 // Logout route
-Route::match(['POST', 'GET'], '/logout', Logout::class)
-    ->middleware('auth')
-    ->name('logout');
+Route::get('/logout', Logout::class)->middleware('auth')->name('logout');
