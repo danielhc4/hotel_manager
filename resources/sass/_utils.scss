@@ -459,7 +459,10 @@ input.hm-input {
 	outline: none;
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
+input.hm-input.hm-input-error {
+	background: $gold;
+	color: $white;
+}
 input.hm-input:disabled {
 	background-color: $disable-bg;
 	border-color: $disable-border;
@@ -551,7 +554,6 @@ form.hm-grid-form div.hm-grid-form-table div.row select {
 form.hm-grid-form div.hm-grid-form-table div.row select.hm-grid-form-select-error {
 	background: $gold;
 	color: $white;
-
 }
 
 /* ==========================================================================

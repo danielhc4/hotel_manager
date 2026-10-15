@@ -84,9 +84,11 @@ class ShiftController extends Controller
 		return response()->json($department, 200);
 	}
 
-    public function destroy(Shift $shift) {
-		$shift->delete();
-		return response()->noContent();
+    public function destroy(Request $request, Shift $shift) {
+        if($request->wantsJson()) {
+            $shift->delete();
+		    return response()->noContent();
+        }
 	}
 
     public function activeShifts() {
