@@ -506,6 +506,12 @@ div.hm-textarea-wrap textarea.hm-textarea:disabled {
 	-webkit-text-fill-color: $text-disabled;
 	opacity: 1;
 }
+div.hm-textarea-wrap.hm-textarea-wrap-error {
+	background: $gold;
+}
+div.hm-textarea-wrap.hm-textarea-wrap-error textarea.hm-textarea {
+	color: $white;
+}
 
 /* ==========================================================================
    Component / Grid Form

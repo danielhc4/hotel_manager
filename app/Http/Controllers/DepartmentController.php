@@ -13,7 +13,7 @@ class DepartmentController extends Controller
 		if($request->wantsJson()) {
 			return response()->json($departments);
 		}
-		return view('departments', compact('departments'));
+		return view('departments');
 	}
 
 	public function show(Request $request, int $id) {
@@ -25,7 +25,6 @@ class DepartmentController extends Controller
 			}
 			return response()->json($department);
 		}
-		// No view assigned
 		return $department;
 	}
 
