@@ -28,40 +28,40 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="registro in registros" :key="registro.id">
-								<td><span class="hm-table-text-dark-bold">{{ registro.name }}</span></td>
+							<tr v-for="record in records" :key="record.id">
+								<td><span class="hm-table-text-dark-bold">{{ record.name }}</span></td>
 								<td>
-									<img v-if="registro.activity_type === 'DAILY'" :src="`${ assetUrl }/daily_recurring_task_icon.svg`" title="Diaria" style="width: 25px;">
+									<img v-if="record.activity_type === 'DAILY'" :src="`${ assetUrl }/daily_recurring_task_icon.svg`" title="Diaria" style="width: 25px;">
 									<img v-else :src="`${ assetUrl }/sporadic_activity_icon.svg`" title="Extra" style="width: 25px;">
 								</td>
-								<td>{{ registro.description }}</td>
+								<td>{{ record.description }}</td>
 								<td>
-									<span v-if="registro.departments_id !== null" class="badge hm-table-badge hm-table-badge-color-oak">
-										{{ registro.department.name }}
+									<span v-if="record.departments_id !== null" class="badge hm-table-badge hm-table-badge-color-oak">
+										{{ record.department.name }}
 									</span>
 									<span v-else class="badge hm-table-badge hm-table-badge-color-gold">
 										General
 									</span>
 								</td>
-								<td>{{ registro.shift.name }}</td>
-								<td v-if="registro.employee">
+								<td>{{ record.shift.name }}</td>
+								<td v-if="record.employee">
 									Confianza
 									<span class="badge hm-table-badge hm-table-badge-color-sort">
-										<span v-if="registro.employee.state === 'ACTIVE'" class="hm-dot-badge active"></span>
-										<span v-if="registro.employee.state === 'ON_VACATIONS'" class="hm-dot-badge on-vacations"></span>
-										<span v-if="registro.employee.state === 'ABSENT'" class="hm-dot-badge absent"></span>
-										{{ registro.employee.first_name }} {{ registro.employee.middle_name }} {{ registro.employee.paternal_surename }} {{ registro.employee.maternal_surename }}
+										<span v-if="record.employee.state === 'ACTIVE'" class="hm-dot-badge active"></span>
+										<span v-if="record.employee.state === 'ON_VACATIONS'" class="hm-dot-badge on-vacations"></span>
+										<span v-if="record.employee.state === 'ABSENT'" class="hm-dot-badge absent"></span>
+										{{ record.employee.first_name }} {{ record.employee.middle_name }} {{ record.employee.paternal_surename }} {{ record.employee.maternal_surename }}
 									</span>
 								</td>
 								<td v-else>Normal</td>
 								<td class="d-flex">
-									<button @click="editar(registro)" type="button" class="hm-icon-btn" data-bs-toggle="modal" data-bs-target="#edit-modal">
+									<button @click="editar(record)" type="button" class="hm-icon-btn" data-bs-toggle="modal" data-bs-target="#edit-modal">
 										<svg viewBox="0 0 24 24">
 											<path d="M12 20h9"></path>
 											<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path>
 										</svg>
 									</button>
-									<button @click="eliminar(registro)" type="button" class="hm-icon-btn" data-bs-toggle="modal" data-bs-target="#delete-modal">
+									<button @click="eliminar(record)" type="button" class="hm-icon-btn" data-bs-toggle="modal" data-bs-target="#delete-modal">
 										<svg viewBox="0 0 24 24">
 											<path d="M3 6h18"></path>
 											<path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -78,10 +78,10 @@
 	</div>
 
 	<!-- Modal Add -->
-	<div class="modal " id="add-modal" tabindex="-1">
+	<div class="modal fade" id="add-modal" ref="modal_add_element" tabindex="-1">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-				<form @submit.prevent="save_add">
+				<form @submit.prevent="fadd">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5">Agregar actividad</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear_form()"></button>
@@ -92,18 +92,20 @@
 								<div class="mb-3">
 									<label for="add_activity_name" class="form-label">Nombre de actividad</label>
 									<input type="text" id="add_activity_name" class="form-control hm-input" placeholder="Ej. Limpiar baños" v-model="form_add.name">
+									<div id="add_activity_name_message_error" class="form-text d-none">Se requiere nombre de actividad</div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="mb-3">
 									<label for="add_activity_shift" class="form-label">Turno</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" id="add_activity_shift" @change="get_employees(form_add.departments_id)" v-model="form_add.shifts_id">
+										<select class="form-select" id="add_activity_shift" @change="get_employees_by_department(form_add.departments_id)" v-model="form_add.shifts_id">
 											<option selected :value="null">Selecciona turno</option>
 											<option v-for="shift in shifts" :value="shift.id">{{ shift.name }}</option>
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
+									<div id="add_activity_shift_message_error" class="form-text d-none">Se requiere turno de actividad</div>
 								</div>
 							</div>
 						</div>
@@ -119,28 +121,31 @@
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
+									<div id="add_activity_type_message_error" class="form-text d-none">Se requiere tipo de actividad</div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="mb-3">
 									<label for="add_activity_department" class="form-label">Departamento</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" id="add_activity_department" @change="get_employees(form_add.departments_id)" v-model="form_add.departments_id">
+										<select class="form-select" id="add_activity_department" @change="get_employees_by_department(form_add.departments_id)" v-model="form_add.departments_id">
 											<option selected :value="null">Actividad general</option>
 											<option v-for="department in departments" :value="department.id">{{ department.name }}</option>
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
+									<div id="add_activity_department_message_error" class="form-text d-none">Se requiere departamento</div>
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-12">
 								<div class="mb-3">
-									<label for="add_shift_description" class="form-label">Descripción</label>
+									<label for="add_activity_description" class="form-label">Descripción</label>
 									<div class="hm-textarea-wrap">
-										<textarea id="add_shift_description" class="form-control hm-textarea" placeholder="Ej. Hacer la limpieza completa de baños"  v-model="form_add.description" rows="3"></textarea>
+										<textarea id="add_activity_description" class="form-control hm-textarea" placeholder="Ej. Hacer la limpieza completa de baños"  v-model="form_add.description" rows="3"></textarea>
 									</div>
+									<div id="add_activity_description_message_error" class="form-text d-none">Se requiere descripción de departamento</div>
 								</div>
 							</div>
 						</div>
@@ -175,7 +180,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn hm-button-coral" data-bs-dismiss="modal" @click="clear_form()">Cerrar</button>
-						<button type="submit" class="btn hm-button-oak" data-bs-dismiss="modal">Guardar</button>
+						<button type="submit" class="btn hm-button-oak">Guardar</button>
 					</div>
 				</form>
 			</div>
@@ -183,10 +188,10 @@
 	</div>
 
 	<!-- Modal Edit -->
-	<div class="modal " id="edit-modal" tabindex="-1">
+	<div class="modal fade" id="edit-modal" ref="modal_edit_element" tabindex="-1">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-				<form @submit.prevent="save_edit">
+				<form @submit.prevent="fedit">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5">Editar actividad</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear_form()"></button>
@@ -203,7 +208,7 @@
 								<div class="mb-3">
 									<label class="form-label">Turno</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" @change="get_employees(form_edit.departments_id)" v-model="form_edit.shifts_id">
+										<select class="form-select" @change="get_employees_by_department(form_edit.departments_id)" v-model="form_edit.shifts_id">
 											<option selected :value="null">Selecciona turno</option>
 											<option v-for="shift in shifts" :value="shift.id">{{ shift.name }}</option>
 										</select>
@@ -230,7 +235,7 @@
 								<div class="mb-3">
 									<label for="edit_activity_department" class="form-label">Departamento</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" id="edit_activity_department" @change="get_employees(form_edit.departments_id)" v-model="form_edit.departments_id">
+										<select class="form-select" id="edit_activity_department" @change="get_employees_by_department(form_edit.departments_id)" v-model="form_edit.departments_id">
 											<option selected :value="null">Actividad general</option>
 											<option v-for="department in departments" :value="department.id">{{ department.name }}</option>
 										</select>
@@ -288,10 +293,10 @@
 	</div>
 
 	<!-- Modal Delete -->
-	<div class="modal " id="delete-modal" tabindex="-1">
+	<div class="modal fade" id="delete-modal" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form @submit.prevent="save_delete">
+				<form @submit.prevent="fdelete">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5">Eliminar actividad</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear_form()"></button>
@@ -313,6 +318,7 @@
 </template>
 <script setup>
 import { ref, onMounted, toRaw, reactive } from 'vue';
+import { Modal } from 'bootstrap';
 
 const props = defineProps({
 	assetUrl: {
@@ -320,13 +326,6 @@ const props = defineProps({
 		require: true
 	}
 });
-
-const registros = ref([]);
-const form_delete = ref({});
-const shifts = ref([]);
-const employees = ref([]);
-const departments = ref([]);
-const erroresValidacion = ref({});
 
 const getInitialForm = () => ({
 	name: null,
@@ -340,8 +339,20 @@ const getInitialForm = () => ({
 	trusted: null
 });
 
+const records = ref([]);
+const shifts = ref([]);
+const departments = ref([]);
 const form_edit = reactive(getInitialForm());
 const form_add = reactive(getInitialForm());
+const form_delete = ref({});
+const employees = ref([]);
+const erroresValidacion = ref({});
+
+const modal_add_element = ref(null);
+const modal_edit_element = ref(null);
+
+let modal_add = null;
+let modal_edit = null;
 
 const headers = {
 	'Accept': 'application/json'
@@ -351,52 +362,57 @@ onMounted(async () => {
 	load_records();
 	get_shifts();
 	get_departments();
+
+	modal_add = new Modal(modal_add_element.value);
+	modal_edit = new Modal(modal_edit_element.value);
 });
 
 async function load_records () {
-	const { data } = await axios.get('/api/activities', headers);
-	registros.value = data;
-};
-
-function clear_form() {
-	Object.assign(form_add, getInitialForm());
-	Object.assign(form_edit, getInitialForm());
-	Object.assign(form_delete, getInitialForm());
+	const { data } = await axios.get(`/api/activities`, headers);
+	records.value = data;
 };
 
 const get_shifts = async () => {
-	const response = await axios.get('/api/shifts', headers);
-	shifts.value = response.data;
+	const { data } = await axios.get(`/api/shifts`, headers);
+	shifts.value = data;
 };
 
-const get_employees = async (departament_id) => {
+const get_departments = async () => {
+	const { data } = await axios.get(`/api/departments`, headers);
+	departments.value = data;
+};
+
+function clear_form() {
+
+	Object.assign(form_add, getInitialForm());
+	Object.assign(form_edit, getInitialForm());
+	Object.assign(form_delete, getInitialForm());
+
+};
+
+const get_employees_by_department = async (departament_id) => {
 	if(departament_id !== null || departament_id !== undefined) {
-		const response = await axios.get(`/api/employees?campo=departments_id&q=${departament_id}`, headers);
+		const { data } = await axios.get(`/api/employees?campo=departments_id&q=${departament_id}`, headers);
 		var employee_filtered = [];
 		if(form_add.shifts_id == null && form_edit.shifts_id == null) {
-			employees.value = response.data;
+			employees.value = data;
 		}
 		else {
-			for(var i = 0; i < response.data.length; i++) {
+			for(var i = 0; i < data.length; i++) {
 				if(form_add.shifts_id !== null) {
-					if(response.data[i].shifts_id == form_add.shifts_id) {
-						employee_filtered.push(response.data[i]);
+					if(data[i].shifts_id == form_add.shifts_id) {
+						employee_filtered.push(data[i]);
 					}
 				}
 				if(form_edit.shifts_id !== null) {
-					if(response.data[i].shifts_id == form_edit.shifts_id) {
-						employee_filtered.push(response.data[i]);
+					if(data[i].shifts_id == form_edit.shifts_id) {
+						employee_filtered.push(data[i]);
 					}
 				}
 			}
 			employees.value = employee_filtered;
 		}
 	}
-};
-
-const get_departments = async () => {
-	const response = await axios.get('/api/departments', headers);
-	departments.value = response.data;
 };
 
 function editar(registro) {
@@ -408,59 +424,37 @@ function eliminar(registro) {
 	form_delete.value = structuredClone(toRaw(registro));
 };
 
-const save_add = async () => {
+const fadd = async () => {
 	try {
-		await axios.post(`/api/activities`, form_add, headers);
-		load_records();
+		let { data } = await axios.post(`/api/activities`, form_add, headers);
+		records.value.push(data);
+		modal_add.hide();
 	}
 	catch(error) {
-		if (error.response) {
-	  		const status = error.response.status
-			if (status === 422) {
-				erroresValidacion.value = error.response.data.errors;
-				// console.log(error.response.data);
-				// console.log(error.response.status);
-				// console.log(error.response.statusText);
-				// console.log(error.response.headers);
-				let options = {
-					backdrop: true,
-					focus: true,
-					keyboard: true
-				};
+		modal_add.hide();
+		erroresValidacion.value = error.response.data.errors;
+		let options = {
+			backdrop: true,
+			focus: true,
+			keyboard: true
+		};
 
-				let error_description = '';
+		let error_description = '';
 
-				error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
-				error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
-				error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
+		error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
+		error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
+		error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
 
-				$('#modal-error-title').html('Error al guardar nuevo departamento');
-				$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
-				$('#modal-error-code').html(error_description);
-				const errorModal = new bootstrap.Modal('#modal-error', options);
-				errorModal.show();
-			}
-			else if (status === 404) {
-				console.error('El registro no existe')
-			}
-			else if (status === 401 || status === 403) {
-				console.error('No tienes permiso para esta acción')
-			}
-			else if (status === 500) {
-				console.error('Error interno del servidor')
-			}
-		}
-		else if (error.request) {
-			console.error('No hubo respuesta del servidor')
-		}
-		else {
-			console.error('Error inesperado:', error.message)
-		}
+		$('#modal-error-title').html('Error al guardar nuevo departamento');
+		$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
+		$('#modal-error-code').html(error_description);
+		const errorModal = new bootstrap.Modal('#modal-error', options);
+		errorModal.show();
 	}
 	Object.assign(form_add, getInitialForm());
 };
 
-const save_edit = async () => {
+const fedit = async () => {
 	$('#trusted_employee').removeClass('hm-grid-form-select-error');
 	$('#trusted_employee_message_error').addClass('d-none');
 	if(form_edit.trusted === 'NO_TRUSTED' || (form_edit.trusted === 'TRUSTED' && form_edit.employees_id !== null)) {
@@ -527,7 +521,7 @@ const save_edit = async () => {
 	Object.assign(form_edit, getInitialForm());
 };
 
-const save_delete = async () => {
+const fdelete = async () => {
 	try {
 		await axios.delete(`/api/activities/${form_delete.value.id}`, headers);
 		load_records();
@@ -578,4 +572,5 @@ const save_delete = async () => {
 	}
 	Object.assign(form_delete, getInitialForm());
 };
+
 </script>
