@@ -142,7 +142,7 @@
 							<div class="col-12">
 								<div class="mb-3">
 									<label for="add_activity_description" class="form-label">Descripción</label>
-									<div class="hm-textarea-wrap">
+									<div class="hm-textarea-wrap" id="add_activity_description_wrap">
 										<textarea id="add_activity_description" class="form-control hm-textarea" placeholder="Ej. Hacer la limpieza completa de baños"  v-model="form_add.description" rows="3"></textarea>
 									</div>
 									<div id="add_activity_description_message_error" class="form-text d-none">Se requiere descripción de departamento</div>
@@ -161,19 +161,20 @@
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
+									<div id="add_activity_trust_message_error" class="form-text d-none">Si la actividad es de confianza se tiene que elegir un empleado.</div>
 								</div>
 							</div>
 							<div class="col-6" v-if="form_add.trusted === 'TRUSTED'">
 								<div class="mb-3">
 									<label for="add_activity_trusted_employee" class="form-label">Empleado de confianza</label>
-									<div id="add_activity_trusted_employee" class="hm-select-wrap">
-										<select class="form-select" id="trusted_employee" v-model="form_add.employees_id">
+									<div class="hm-select-wrap">
+										<select class="form-select" id="add_activity_trusted_employee" v-model="form_add.employees_id">
 											<option selected :value="null">Empleado de confianza</option>
 											<option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.middle_name }} {{ employee.paternal_surename }} {{ employee.maternal_surename }} ({{ employee.shift.name }}) </option>
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
-									<div id="trusted_employee_message_error" class="form-text d-none">Si la actividad es de confianza se tiene que elegir un empleado.</div>
+									<div id="add_activity_trusted_employee_message_error" class="form-text d-none">Si la actividad es de confianza se tiene que elegir un empleado.</div>
 								</div>
 							</div>
 						</div>
@@ -425,33 +426,105 @@ function eliminar(registro) {
 };
 
 const fadd = async () => {
-	try {
-		let { data } = await axios.post(`/api/activities`, form_add, headers);
-		records.value.push(data);
-		modal_add.hide();
+
+	$('#add_activity_name').removeClass('hm-input-error');
+	$('#add_activity_name_message_error').addClass('d-none');
+
+	$('#add_activity_shift').removeClass('hm-select-error');
+	$('#add_activity_shift_message_error').addClass('d-none');
+
+	$('#add_activity_type').removeClass('hm-select-error');
+	$('#add_activity_type_message_error').addClass('d-none');
+
+	$('#add_activity_description_wrap').removeClass('hm-textarea-wrap-error');
+	$('#add_activity_description_message_error').addClass('d-none');
+
+	$('#add_activity_trust').removeClass('hm-select-error');
+	$('#add_activity_trust_message_error').addClass('d-none');
+
+	$('#add_activity_trusted_employee').removeClass('hm-select-error');
+	$('#add_activity_trusted_employee_message_error').addClass('d-none');
+
+	let name_validation, shift_validation, type_validation, description_validation, trust_validation, trusted_validation = false;
+
+	if(form_add.name == null || form_add.name.length == 0) {
+		$('#add_activity_name').addClass('hm-input-error');
+		$('#add_activity_name_message_error').removeClass('d-none');
 	}
-	catch(error) {
-		modal_add.hide();
-		erroresValidacion.value = error.response.data.errors;
-		let options = {
-			backdrop: true,
-			focus: true,
-			keyboard: true
-		};
-
-		let error_description = '';
-
-		error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
-		error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
-		error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
-
-		$('#modal-error-title').html('Error al guardar nuevo departamento');
-		$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
-		$('#modal-error-code').html(error_description);
-		const errorModal = new bootstrap.Modal('#modal-error', options);
-		errorModal.show();
+	else {
+		name_validation = true;
 	}
-	Object.assign(form_add, getInitialForm());
+
+	if(form_add.shifts_id == null) {
+		$('#add_activity_shift').addClass('hm-select-error');
+		$('#add_activity_shift_message_error').removeClass('d-none');
+	}
+	else {
+		shift_validation = true;
+	}
+
+	if(form_add.activity_type == null) {
+		$('#add_activity_type').addClass('hm-select-error');
+		$('#add_activity_type_message_error').removeClass('d-none');
+	}
+	else {
+		type_validation = true;
+	}
+
+	if(form_add.description == null || form_add.description.length == 0) {
+		$('#add_activity_description_wrap').addClass('hm-textarea-wrap-error');
+		$('#add_activity_description_message_error').removeClass('d-none');
+	}
+	else {
+		description_validation = true;
+	}
+
+	if(form_add.trusted == null) {
+		$('#add_activity_trust').addClass('hm-select-error');
+		$('#add_activity_trust_message_error').removeClass('d-none');
+	}
+	else {
+		trust_validation = true;
+	}
+
+	if(form_add.trusted == 'TRUSTED' && form_add.employees_id == null) {
+		$('#add_activity_trusted_employee').addClass('hm-select-error');
+		$('#add_activity_trusted_employee_message_error').removeClass('d-none');
+	}
+	else {
+		trusted_validation = true;
+	}
+	
+
+	if(name_validation && shift_validation && type_validation && description_validation && trust_validation && trusted_validation) {
+		try {
+			await axios.post(`/api/activities`, form_add, headers);
+			load_records();
+			modal_add.hide();
+		}
+		catch(error) {
+			modal_add.hide();
+			erroresValidacion.value = error.response.data.errors;
+			let options = {
+				backdrop: true,
+				focus: true,
+				keyboard: true
+			};
+
+			let error_description = '';
+
+			error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
+			error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
+			error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
+
+			$('#modal-error-title').html('Error al guardar nuevo departamento');
+			$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
+			$('#modal-error-code').html(error_description);
+			const errorModal = new bootstrap.Modal('#modal-error', options);
+			errorModal.show();
+		}
+		clear_form();
+	}
 };
 
 const fedit = async () => {
