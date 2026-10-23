@@ -440,6 +440,9 @@ div.hm-select-wrap select {
 	outline: none;
 	cursor: pointer;
 }
+div.hm-select-wrap select.hm-select-error {
+	background: $gold;
+}
 
 /* ==========================================================================
    Component / Input
@@ -459,7 +462,10 @@ input.hm-input {
 	outline: none;
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
+input.hm-input.hm-input-error {
+	background: $gold;
+	color: $white;
+}
 input.hm-input:disabled {
 	background-color: $disable-bg;
 	border-color: $disable-border;
@@ -502,6 +508,12 @@ div.hm-textarea-wrap textarea.hm-textarea:disabled {
 	color: $text-disabled;
 	-webkit-text-fill-color: $text-disabled;
 	opacity: 1;
+}
+div.hm-textarea-wrap.hm-textarea-wrap-error {
+	background: $gold;
+}
+div.hm-textarea-wrap.hm-textarea-wrap-error textarea.hm-textarea {
+	color: $white;
 }
 
 /* ==========================================================================
@@ -551,7 +563,6 @@ form.hm-grid-form div.hm-grid-form-table div.row select {
 form.hm-grid-form div.hm-grid-form-table div.row select.hm-grid-form-select-error {
 	background: $gold;
 	color: $white;
-
 }
 
 /* ==========================================================================

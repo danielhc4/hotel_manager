@@ -5,32 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Activity;
+use App\Models\Department;
+use App\Models\Shift;
 
 class ActivityController extends Controller
 {
-    public function index(Request $request) {
-        $activities = Activity::with([
-            'shift',
-            'employee',
-			'department'
-        ])->get();
-        if($request->wantsJson()) {
+	public function index(Request $request) {
+		if($request->wantsJson()) {
+			$activities = Activity::with([
+				'shift',
+				'employee',
+				'department'
+			])->get();
 			return response()->json($activities);
 		}
-		
-        return view('activities');
-    }
+		return view('activities');
+	}
 
-    public function show(Request $request, int $id) {
+	public function show(Request $request, int $id) {
 		$activity = Activity::find($id);
-
 		if($request->wantsJson()) {
 			if (!$activity) {
 				return response()->json(['message' => 'Actividad no encontrado'], 404);
 			}
 			return response()->json($activity);
 		}
-		// No view assigned
 		return $activity;
 	}
 
@@ -47,9 +46,9 @@ class ActivityController extends Controller
 		$activity = Activity::find($validated['id']);
 		$activity->update($validated);
 		$activity2 = Activity::with([
-            'shift',
-            'employee'
-        ])->findOrFail($validated['id']);
+			'shift',
+			'employee'
+		])->findOrFail($validated['id']);
 		return response()->json($activity2, 200);
 	}
 
@@ -72,13 +71,11 @@ class ActivityController extends Controller
 	}
 
 	public function activitiesGroupedByShiftsDepts() {
-
 		$activities = Activity::with([
-            'shift',
-            'employee',
+			'shift',
+			'employee',
 			'department'
-        ])->get();
-
+		])->get();
 		$activities_by_department = [];
 		for($i = 0; $i < count($activities); $i++) {
 			// Si es general
@@ -141,9 +138,6 @@ class ActivityController extends Controller
 			}
 
 		}
-
-
-
 		$department_by_shifts = [];
 		for($i = 0; $i < count($activities_by_department); $i++) {
 
@@ -254,7 +248,7 @@ class ActivityController extends Controller
 			}
 
 		}
-
 		return $department_by_shifts;
+
 	}
 }
