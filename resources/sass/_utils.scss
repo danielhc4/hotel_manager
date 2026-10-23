@@ -440,6 +440,9 @@ div.hm-select-wrap select {
 	outline: none;
 	cursor: pointer;
 }
+div.hm-select-wrap select.hm-select-error {
+	background: $gold;
+}
 
 /* ==========================================================================
    Component / Input
