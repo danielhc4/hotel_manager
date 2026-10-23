@@ -660,48 +660,23 @@ const fdelete = async () => {
 		load_records();
 	}
 	catch(error) {
-		if (error.response) {
-	  		const status = error.response.status
-			if (status === 422) {
-				erroresValidacion.value = error.response.data.errors;
-				// console.log(error.response.data);
-				// console.log(error.response.status);
-				// console.log(error.response.statusText);
-				// console.log(error.response.headers);
-				let options = {
-					backdrop: true,
-					focus: true,
-					keyboard: true
-				};
+		erroresValidacion.value = error.response.data.errors;
+		let options = {
+			backdrop: true,
+			focus: true,
+			keyboard: true
+		};
+		let error_description = '';
 
-				let error_description = '';
+		error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
+		error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
+		error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
 
-				error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
-				error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
-				error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
-
-				$('#modal-error-title').html('Error al guardar cambios en departamento');
-				$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
-				$('#modal-error-code').html(error_description);
-				const errorModal = new bootstrap.Modal('#modal-error', options);
-				errorModal.show();
-			}
-			else if (status === 404) {
-				console.error('El registro no existe')
-			}
-			else if (status === 401 || status === 403) {
-				console.error('No tienes permiso para esta acción')
-			}
-			else if (status === 500) {
-				console.error('Error interno del servidor')
-			}
-		}
-		else if (error.request) {
-			console.error('No hubo respuesta del servidor')
-		}
-		else {
-			console.error('Error inesperado:', error.message)
-		}
+		$('#modal-error-title').html('Error al guardar cambios en departamento');
+		$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
+		$('#modal-error-code').html(error_description);
+		const errorModal = new bootstrap.Modal('#modal-error', options);
+		errorModal.show();
 	}
 	Object.assign(form_delete, getInitialForm());
 };
