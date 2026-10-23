@@ -30,7 +30,7 @@ class CheckListController extends Controller
 		if($request->wantsJson()) {
 			return response()->json($checklist);
 		}
-		return view('checklist', compact('checklist'));
+		return view('checklist');
 	}
 
 	public function store(Request $request) {
