@@ -161,7 +161,7 @@
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
-									<div id="add_activity_trust_message_error" class="form-text d-none">Si la actividad es de confianza se tiene que elegir un empleado.</div>
+									<div id="add_activity_trust_message_error" class="form-text d-none">Se requiere especificar si es actividad de confianza.</div>
 								</div>
 							</div>
 							<div class="col-6" v-if="form_add.trusted === 'TRUSTED'">
@@ -201,35 +201,38 @@
 						<div class="row">
 							<div class="col-6">
 								<div class="mb-3">
-									<label class="form-label">Nombre de actividad</label>
-									<input type="text" class="form-control hm-input" v-model="form_edit.name">
+									<label for="edit_activity_name" class="form-label">Nombre de actividad</label>
+									<input type="text" id="edit_activity_name" class="form-control hm-input" placeholder="Ej. Limpiar baños" v-model="form_edit.name">
+									<div id="edit_activity_name_message_error" class="form-text d-none">Se requiere nombre de actividad</div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="mb-3">
-									<label class="form-label">Turno</label>
+									<label for="edit_activity_shift" class="form-label">Turno</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" @change="get_employees_by_department(form_edit.departments_id)" v-model="form_edit.shifts_id">
+										<select class="form-select" id="edit_activity_shift" @change="get_employees_by_department(form_edit.departments_id)" v-model="form_edit.shifts_id">
 											<option selected :value="null">Selecciona turno</option>
 											<option v-for="shift in shifts" :value="shift.id">{{ shift.name }}</option>
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
+									<div id="edit_activity_shift_message_error" class="form-text d-none">Se requiere turno de actividad</div>
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-6">
 								<div class="mb-3">
-									<label class="form-label">Tipo de actividad</label>
+									<label for="edit_activity_type" class="form-label">Tipo de actividad</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" v-model="form_edit.activity_type">
+										<select class="form-select" id="edit_activity_type" v-model="form_edit.activity_type">
 											<option selected :value="null">Selecciona tipo de actividad</option>
 											<option value="DAILY">Diaria</option>
 											<option value="EXTRA">Extra</option>
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
+									<div id="edit_activity_type_message_error" class="form-text d-none">Se requiere tipo de actividad</div>
 								</div>
 							</div>
 							<div class="col-6">
@@ -248,38 +251,40 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="mb-3">
-									<label class="form-label">Descripción</label>
+									<label for="edit_activity_description" class="form-label">Descripción</label>
 									<div class="hm-textarea-wrap">
-										<textarea class="form-control hm-textarea"  v-model="form_edit.description" rows="3"></textarea>
+										<textarea id="edit_activity_description" class="form-control hm-textarea" placeholder="Ej. Hacer limpieza de baños" v-model="form_edit.description" rows="3"></textarea>
 									</div>
 								</div>
+								<div id="edit_activity_description_message_error" class="form-text d-none">Se requiere descripción de departamento</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-6">
 								<div class="mb-3">
-									<label class="form-label">Actividad de confianza</label>
+									<label for="edit_activity_trust" class="form-label">Actividad de confianza</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" v-model="form_edit.trusted">
+										<select class="form-select" id="edit_activity_trust" @change="get_employees_by_department(form_edit.departments_id)" v-model="form_edit.trusted">
 											<option selected :value="null">Actividad de confianza</option>
 											<option value="TRUSTED">Sí</option>
 											<option value="NO_TRUSTED">No</option>
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
+									<div id="edit_activity_trust_message_error" class="form-text d-none">Se requiere especificar si es actividad de confianza.</div>
 								</div>
 							</div>
 							<div class="col-6" v-if="form_edit.trusted === 'TRUSTED'">
 								<div class="mb-3">
-									<label class="form-label">Empleado de confianza</label>
+									<label for="edit_activity_trusted_employee" class="form-label">Empleado de confianza</label>
 									<div class="hm-select-wrap">
-										<select class="form-select" id="trusted_employee" v-model="form_edit.employees_id">
+										<select class="form-select" id="edit_activity_trusted_employee" v-model="form_edit.employees_id">
 											<option selected :value="null">Empleado de confianza</option>
 											<option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.middle_name }} {{ employee.paternal_surename }} {{ employee.maternal_surename }}</option>
 										</select>
 										<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
 									</div>
-									<div id="trusted_employee_message_error" class="form-text d-none">Si la actividad es de confianza se tiene que elegir un empleado.</div>
+									<div id="edit_activity_trusted_employee_message_error" class="form-text d-none">Si la actividad es de confianza se tiene que elegir un empleado.</div>
 								</div>
 							</div>
 						</div>
@@ -389,6 +394,32 @@ function clear_form() {
 	Object.assign(form_edit, getInitialForm());
 	Object.assign(form_delete, getInitialForm());
 
+	$('#add_activity_name').removeClass('hm-input-error');
+	$('#add_activity_name_message_error').addClass('d-none');
+	$('#add_activity_shift').removeClass('hm-select-error');
+	$('#add_activity_shift_message_error').addClass('d-none');
+	$('#add_activity_type').removeClass('hm-select-error');
+	$('#add_activity_type_message_error').addClass('d-none');
+	$('#add_activity_description_wrap').removeClass('hm-textarea-wrap-error');
+	$('#add_activity_description_message_error').addClass('d-none');
+	$('#add_activity_trust').removeClass('hm-select-error');
+	$('#add_activity_trust_message_error').addClass('d-none');
+	$('#add_activity_trusted_employee').removeClass('hm-select-error');
+	$('#add_activity_trusted_employee_message_error').addClass('d-none');
+
+	$('#edit_activity_name').removeClass('hm-input-error');
+	$('#edit_activity_name_message_error').addClass('d-none');
+	$('#edit_activity_shift').removeClass('hm-select-error');
+	$('#edit_activity_shift_message_error').addClass('d-none');
+	$('#edit_activity_type').removeClass('hm-select-error');
+	$('#edit_activity_type_message_error').addClass('d-none');
+	$('#edit_activity_description_wrap').removeClass('hm-textarea-wrap-error');
+	$('#edit_activity_description_message_error').addClass('d-none');
+	$('#edit_activity_trust').removeClass('hm-select-error');
+	$('#edit_activity_trust_message_error').addClass('d-none');
+	$('#edit_activity_trusted_employee').removeClass('hm-select-error');
+	$('#edit_activity_trusted_employee_message_error').addClass('d-none');
+
 };
 
 const get_employees_by_department = async (departament_id) => {
@@ -429,19 +460,14 @@ const fadd = async () => {
 
 	$('#add_activity_name').removeClass('hm-input-error');
 	$('#add_activity_name_message_error').addClass('d-none');
-
 	$('#add_activity_shift').removeClass('hm-select-error');
 	$('#add_activity_shift_message_error').addClass('d-none');
-
 	$('#add_activity_type').removeClass('hm-select-error');
 	$('#add_activity_type_message_error').addClass('d-none');
-
 	$('#add_activity_description_wrap').removeClass('hm-textarea-wrap-error');
 	$('#add_activity_description_message_error').addClass('d-none');
-
 	$('#add_activity_trust').removeClass('hm-select-error');
 	$('#add_activity_trust_message_error').addClass('d-none');
-
 	$('#add_activity_trusted_employee').removeClass('hm-select-error');
 	$('#add_activity_trusted_employee_message_error').addClass('d-none');
 
@@ -528,70 +554,104 @@ const fadd = async () => {
 };
 
 const fedit = async () => {
-	$('#trusted_employee').removeClass('hm-grid-form-select-error');
-	$('#trusted_employee_message_error').addClass('d-none');
-	if(form_edit.trusted === 'NO_TRUSTED' || (form_edit.trusted === 'TRUSTED' && form_edit.employees_id !== null)) {
-		try {
-			if(form_edit.trusted === 'NO_TRUSTED') {
-				form_edit.employees_id = null;
-			}
-			await axios.put(`/api/activities`, form_edit, headers);
-			bootstrap.Modal.getInstance($('#edit-modal')[0]).hide();
-			load_records();
-		}
-		catch(error) {
-			bootstrap.Modal.getInstance($('#edit-modal')[0]).hide();
-			if (error.response) {
-				const status = error.response.status
-				if (status === 422) {
-					erroresValidacion.value = error.response.data.errors;
-					// console.log(error.response.data);
-					// console.log(error.response.status);
-					// console.log(error.response.statusText);
-					// console.log(error.response.headers);
 
-					let options = {
-						backdrop: true,
-						focus: true,
-						keyboard: true
-					};
+	$('#edit_activity_name').removeClass('hm-input-error');
+	$('#edit_activity_name_message_error').addClass('d-none');
+	$('#edit_activity_shift').removeClass('hm-select-error');
+	$('#edit_activity_shift_message_error').addClass('d-none');
+	$('#edit_activity_type').removeClass('hm-select-error');
+	$('#edit_activity_type_message_error').addClass('d-none');
+	$('#edit_activity_description_wrap').removeClass('hm-textarea-wrap-error');
+	$('#edit_activity_description_message_error').addClass('d-none');
+	$('#edit_activity_trust').removeClass('hm-select-error');
+	$('#edit_activity_trust_message_error').addClass('d-none');
+	$('#edit_activity_trusted_employee').removeClass('hm-select-error');
+	$('#edit_activity_trusted_employee_message_error').addClass('d-none');
 
-					let error_description = '';
+	let name_validation, shift_validation, type_validation, description_validation, trust_validation, trusted_validation = false;
 
-					error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
-					error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
-					error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
-
-					$('#modal-error-title').html('Error al guardar cambios en actividad');
-					$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
-					$('#modal-error-code').html(error_description);
-					const errorModal = new bootstrap.Modal('#modal-error', options);
-					errorModal.show();
-				}
-				else if (status === 404) {
-					console.error('El registro no existe')
-				}
-				else if (status === 401 || status === 403) {
-					console.error('No tienes permiso para esta acción')
-				}
-				else if (status === 500) {
-					console.error('Error interno del servidor');
-				}
-			}
-			else if (error.request) {
-				console.error('No hubo respuesta del servidor')
-			}
-			else {
-				console.error('Error inesperado:', error.message)
-			}
-		}
+	if(form_edit.name == null || form_edit.name.length == 0) {
+		$('#edit_activity_name').addClass('hm-input-error');
+		$('#edit_activity_name_message_error').removeClass('d-none');
 	}
 	else {
-		$('#trusted_employee').addClass('hm-grid-form-select-error');
-		$('#trusted_employee_message_error').removeClass('d-none');
-		
+		name_validation = true;
 	}
-	Object.assign(form_edit, getInitialForm());
+
+	if(form_edit.shifts_id == null) {
+		$('#edit_activity_shift').addClass('hm-select-error');
+		$('#edit_activity_shift_message_error').removeClass('d-none');
+	}
+	else {
+		shift_validation = true;
+	}
+
+	if(form_edit.activity_type == null) {
+		$('#edit_activity_type').addClass('hm-select-error');
+		$('#edit_activity_type_message_error').removeClass('d-none');
+	}
+	else {
+		type_validation = true;
+	}
+
+	if(form_edit.description == null || form_edit.description.length == 0) {
+		$('#edit_activity_description_wrap').addClass('hm-textarea-wrap-error');
+		$('#edit_activity_description_message_error').removeClass('d-none');
+	}
+	else {
+		description_validation = true;
+	}
+
+	if(form_edit.trusted == null) {
+		$('#edit_activity_trust').addClass('hm-select-error');
+		$('#edit_activity_trust_message_error').removeClass('d-none');
+	}
+	else {
+		trust_validation = true;
+	}
+
+	if(form_edit.trusted == 'TRUSTED' && form_edit.employees_id == null) {
+		$('#edit_activity_trusted_employee').addClass('hm-select-error');
+		$('#edit_activity_trusted_employee_message_error').removeClass('d-none');
+	}
+	else if(form_edit.trusted == 'NO_TRUSTED' && form_edit.employees_id !== null) {
+		form_edit.employees_id = null;
+		trusted_validation = true;
+	}
+	else if(form_edit.trusted == 'NO_TRUSTED' && form_edit.employees_id == null) {
+		trusted_validation = true;
+	}
+	else {
+		trusted_validation = true;
+	}
+
+	if(name_validation && shift_validation && type_validation && description_validation && trust_validation && trusted_validation) {
+		console.log(form_edit);
+		try {
+			await axios.put(`/api/activities`, form_edit, headers);
+			load_records();
+			modal_edit.hide();
+		}
+		catch(error) {
+			modal_edit.hide();
+			erroresValidacion.value = error.response.data.errors;
+			let options = {
+				backdrop: true,
+				focus: true,
+				keyboard: true
+			};
+			let error_description = '';
+			error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
+			error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
+			error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
+			$('#modal-error-title').html('Error al guardar cambios en actividad');
+			$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
+			$('#modal-error-code').html(error_description);
+			const errorModal = new bootstrap.Modal('#modal-error', options);
+			errorModal.show();
+		}
+		clear_form();
+	}
 };
 
 const fdelete = async () => {
