@@ -20,6 +20,7 @@ class Employee extends Model
         'middle_name',
         'paternal_surename',
         'maternal_surename',
+        'company_employee_id',
         'departments_id',
         'shifts_id',
         'phone',

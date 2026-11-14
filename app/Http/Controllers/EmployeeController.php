@@ -52,16 +52,17 @@ class EmployeeController extends Controller
 
 	public function update(Request $request) {
 		$validated = $request->validate([
-			'id'                => ['required', 'int'],
-			'first_name'        => ['required', 'string', 'max:256'],
-			'middle_name'       => ['nullable', 'string', 'max:256'],
-			'paternal_surename' => ['required', 'string', 'max:256'],
-			'maternal_surename' => ['required', 'string', 'max:256'],
-			'departments_id'    => ['required', 'integer', 'exists:departments,id'],
-			'shifts_id'         => ['required', 'integer', 'exists:shifts,id'],
-			'phone'             => ['required', 'string', 'digits:10'],
-			'address'           => ['nullable', 'string', 'max:256'],
-			'state'             => ['required', Rule::in(['ACTIVE', 'ON_VACATIONS', 'ABSENT'])],
+			'id'                	=> ['required', 'int'],
+			'first_name'        	=> ['required', 'string', 'max:256'],
+			'middle_name'       	=> ['nullable', 'string', 'max:256'],
+			'paternal_surename' 	=> ['required', 'string', 'max:256'],
+			'maternal_surename' 	=> ['required', 'string', 'max:256'],
+			'company_employee_id'	=> ['nullable', 'string', 'max:20'],
+			'departments_id'    	=> ['required', 'integer', 'exists:departments,id'],
+			'shifts_id'         	=> ['required', 'integer', 'exists:shifts,id'],
+			'phone'             	=> ['required', 'string', 'digits:10'],
+			'address'           	=> ['nullable', 'string', 'max:256'],
+			'state'             	=> ['required', Rule::in(['ACTIVE', 'ON_VACATIONS', 'ABSENT'])],
 		]);
 		$employee = Employee::find($validated['id']);
 		$employee->update($validated);
@@ -78,6 +79,7 @@ class EmployeeController extends Controller
 			'middle_name'       => ['nullable', 'string', 'max:256'],
 			'paternal_surename' => ['required', 'string', 'max:256'],
 			'maternal_surename' => ['required', 'string', 'max:256'],
+			'company_employee_id'	=> ['nullable', 'string', 'max:20'],
 			'departments_id'    => ['required', 'integer', 'exists:departments,id'],
 			'shifts_id'         => ['required', 'integer', 'exists:shifts,id'],
 			'phone'             => ['required', 'string', 'digits:10'],
