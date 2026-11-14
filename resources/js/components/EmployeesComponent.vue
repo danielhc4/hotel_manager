@@ -21,6 +21,7 @@
 								<th scope="col" class="text-left">Nombre</th>
 								<th scope="col" class="text-left">Departamento</th>
 								<th scope="col" class="text-left">Turno</th>
+								<th scope="col" class="text-left">No. Empleado</th>
 								<th scope="col" class="text-left">Teléfono</th>
 								<th scope="col" class="text-left">Dirección</th>
 								<th scope="col" class="text-left">Estado</th>
@@ -41,6 +42,7 @@
 								</td>
 								<td><span class="badge rounded-pill border hm-table-badge hm-table-badge-color-sort">{{ registro.department.name }}</span></td>
 								<td><span class="hm-table-text-mutted">{{ registro.shift.name }}</span></td>
+								<td>{{ registro.company_employee_id }}</td>
 								<td>{{ registro.phone }}</td>
 								<td>{{ registro.address }}</td>
 								<td>
@@ -75,7 +77,7 @@
 	<div class="modal " id="add-modal" tabindex="-1">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-				<form @submit.prevent="save_add">
+				<form @submit.prevent="fadd">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5">Agregar empleado</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear_form()"></button>
@@ -149,6 +151,14 @@
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-6">
+								<div class="mb-3">
+									<label for="add_employee_company_id" class="form-label">ID Empleado</label>
+									<input type="tel" pattern="[0-9]{10}" id="add_employee_company_id" class="form-control hm-input" placeholder="Ej. 0000123" v-model="form_add.company_employee_id">
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn hm-button-coral" data-bs-dismiss="modal" @click="clear_form()">Cerrar</button>
@@ -163,7 +173,7 @@
 	<div class="modal " id="edit-modal" tabindex="-1">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-				<form @submit.prevent="save_edit">
+				<form @submit.prevent="fedit">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5">Editar empleado</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear_form()"></button>
@@ -251,6 +261,14 @@
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-6">
+								<div class="mb-3">
+									<label for="edit_employee_company_id" class="form-label">ID Empleado</label>
+									<input id="edit_employee_company_id" type="text" class="form-control hm-input" placeholder="Ej. 0000123" v-model="form_edit.company_employee_id">
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn hm-button-coral" data-bs-dismiss="modal" @click="clear_form()">Cerrar</button>
@@ -265,7 +283,7 @@
 	<div class="modal " id="delete-modal" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form @submit.prevent="save_delete">
+				<form @submit.prevent="fdelete">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5">Eliminar empleado</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear_form()"></button>
@@ -300,6 +318,7 @@ const getInitialForm = () => ({
 	middle_name: null,
 	paternal_surename: null,
 	maternal_surename: null,
+	company_employee_id: null,
 	departments_id: null,
 	shifts_id: null,
 	phone: null,
@@ -348,7 +367,7 @@ const get_shifts = async () => {
 	shifts.value = response.data;
 };
 
-const save_add = async () => {
+const fadd = async () => {
 
 	// form_add.first_name
 
@@ -403,59 +422,36 @@ const save_add = async () => {
 	Object.assign(form_add, getInitialForm());
 };
 
-const save_edit = async () => {
+const fedit = async () => {
 	try {
+		console.log(form_edit.value);
 		await axios.put(`/api/employees`, form_edit.value, headers);
 		load_records();
 	}
 	catch(error) {
-		if (error.response) {
-	  		const status = error.response.status
-			if (status === 422) {
-				erroresValidacion.value = error.response.data.errors;
-				// console.log(error.response.data);
-				// console.log(error.response.status);
-				// console.log(error.response.statusText);
-				// console.log(error.response.headers);
-				let options = {
-					backdrop: true,
-					focus: true,
-					keyboard: true
-				};
+		erroresValidacion.value = error.response.data.errors;
+		let options = {
+			backdrop: true,
+			focus: true,
+			keyboard: true
+		};
 
-				let error_description = '';
+		let error_description = '';
 
-				error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
-				error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
-				error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
+		error_description += '<b class="mh-text-dark">Tipo:</b> HTTP<br>';
+		error_description += '<b class="mh-text-dark">Código:</b> ' + error.response.status + ' ' + error.response.statusText + '<br>';
+		error_description += '<b class="mh-text-dark">Descripción:</b> ' + error.response.data.message + '<br>';
 
-				$('#modal-error-title').html('Error al guardar cambios en empleado');
-				$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
-				$('#modal-error-code').html(error_description);
-				const errorModal = new bootstrap.Modal('#modal-error', options);
-				errorModal.show();
-			}
-			else if (status === 404) {
-				console.error('El registro no existe')
-			}
-			else if (status === 401 || status === 403) {
-				console.error('No tienes permiso para esta acción')
-			}
-			else if (status === 500) {
-				console.error('Error interno del servidor')
-			}
-		}
-		else if (error.request) {
-			console.error('No hubo respuesta del servidor')
-		}
-		else {
-			console.error('Error inesperado:', error.message)
-		}
+		$('#modal-error-title').html('Error al guardar cambios en empleado');
+		$('#modal-error-description').html('Al guardar el registro se presentó un problema. Intente nuevamente y en caso de persistir reporte el problema.');
+		$('#modal-error-code').html(error_description);
+		const errorModal = new bootstrap.Modal('#modal-error', options);
+		errorModal.show();
 	}
 	Object.assign(form_edit, getInitialForm());
 };
 
-const save_delete = async () => {
+const fdelete = async () => {
 	try {
 		await axios.delete(`/api/employees/${form_delete.value.id}`, headers);
 		load_records();
